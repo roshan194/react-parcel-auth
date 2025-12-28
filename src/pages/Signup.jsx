@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signupSuccess } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import "../styles/auth.css";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -12,6 +14,7 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -27,41 +30,58 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.password) {
-      setError("All fields are required");
+    const { name, email, password, confirmPassword } = formData;
+
+    if (!name || !email || !password || !confirmPassword) {
+      setError("Error : All the fields are mandatory");
+      setSuccess("");
       return;
     }
 
-    const accessToken = Math.random().toString(36).substring(2);
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      setSuccess("");
+      return;
+    }
 
-    localStorage.setItem("user", JSON.stringify(formData));
-    localStorage.setItem("token", accessToken);
+    const token = Math.random().toString(36).substring(2);
 
-    dispatch(signupSuccess({ user: formData, token: accessToken }));
+    localStorage.setItem("user", JSON.stringify({ name, email, password }));
+    localStorage.setItem("token", token);
 
-    setSuccess("Signup successful!");
+    dispatch(signupSuccess({ user: { name, email, password }, token }));
+
     setError("");
+    setSuccess("Successfully Signed Up!");
 
     setTimeout(() => navigate("/profile"), 1000);
   };
 
   return (
-    <div style={{ width: "300px", margin: "100px auto" }}>
-      <h2>Signup</h2>
+    <>
+      <Header />
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
+      <div className="page">
+        <h1>Signup</h1>
 
-      <form onSubmit={handleSubmit}>
-        <input name="name" placeholder="Name" onChange={handleChange} />
-        <br /><br />
-        <input name="email" placeholder="Email" onChange={handleChange} />
-        <br /><br />
-        <input name="password" type="password" placeholder="Password" onChange={handleChange} />
-        <br /><br />
-        <button type="submit">Signup</button>
-      </form>
-    </div>
+        <form className="form" onSubmit={handleSubmit}>
+          <input name="name" placeholder="Full Name" onChange={handleChange} />
+          <input name="email" placeholder="Email" onChange={handleChange} />
+          <input name="password" type="password" placeholder="Password" onChange={handleChange} />
+          <input
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+            onChange={handleChange}
+          />
+
+          {error && <p className="error">{error}</p>}
+          {success && <p className="success">{success}</p>}
+
+          <button className="btn">Signup</button>
+        </form>
+      </div>
+    </>
   );
 };
 

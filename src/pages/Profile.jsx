@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/authSlice";
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import "../styles/auth.css";
 
 const Profile = () => {
   const { user, token } = useSelector((state) => state.auth);
@@ -19,18 +21,23 @@ const Profile = () => {
   };
 
   return (
-    <div style={{ width: "300px", margin: "100px auto" }}>
-      <h2>Profile</h2>
+    <>
+      <Header />
 
-      {user && (
-        <>
-          <p><b>Name:</b> {user.name}</p>
-          <p><b>Email:</b> {user.email}</p>
-        </>
-      )}
+      <div className="page">
+        <h1>Profile</h1>
 
-      <button onClick={handleLogout}>Logout</button>
-    </div>
+        {user && (
+          <div className="profile-info">
+            <p><span>Full Name :</span> {user.name}</p>
+            <p><span>Email :</span> {user.email}</p>
+            <p><span>Password :</span> {user.password}</p>
+          </div>
+        )}
+
+        <button className="btn" onClick={handleLogout}>Logout</button>
+      </div>
+    </>
   );
 };
 
