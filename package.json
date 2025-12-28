@@ -1,0 +1,23 @@
+{
+  "name": "react-parcel-auth",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^6.3.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.3"
+  }
+}
